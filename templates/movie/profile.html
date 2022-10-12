@@ -1,0 +1,13 @@
+{% extends "movie/base.html" %}
+{% block content %}
+<div style="padding: 10px;">    
+    <form method="post" class="form-group">
+        {% csrf_token %}
+        <p>Username:{{ user_form.username }}</p>        
+        <p>Email:{{ user_form.email }}</p> 
+        <br>
+        <button type="submit" class="btn btn-success">Save Changes</button>
+        <button type="reset" class="btn btn-dark">Reset</button>
+    </form>
+</div>
+{% endblock content %}

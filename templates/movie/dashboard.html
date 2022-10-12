@@ -1,0 +1,25 @@
+{% extends "movie/base.html" %}
+{% block content %}
+<div class="col-md-12 text-left" style="margin-top:5px;">
+    <p>Welcome {{request.user|title}} !!!!</p>
+</div> 
+<div class="container">
+    <div class="row">         
+        <div class="col-md-12 text-right" >
+            <button class="btn btn-success" onclick="location.href='/upload-image'">Upload movie poster</button>
+            <button class="btn btn-warning" onclick="location.href='/logout'">Logout</button>
+        </div>
+    </div>
+</div>
+<div class="container">
+    {% if movie %}
+        {% for i in movie %}
+            <h5># {{i.movie_name | title}}</h5><br>
+            {% if i.movie_description is not None %}
+                <p>{{i.movie_description}}</p><br>
+            {% endif %}
+            <img src="{{ media_url }}{{i.movie_poster}}" class="border border-primary img-fluid"><br><hr>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock content %}
