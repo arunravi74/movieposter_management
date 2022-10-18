@@ -9,6 +9,7 @@ class Movie(models.Model):
     movie_poster = models.ImageField(upload_to="images")
     movie_description = models.CharField(max_length=200,blank=True,null=True)
     users = models.ManyToManyField(User)
+    owner = models.IntegerField()
 
     def __str__(self) -> str:
         return self.movie_name

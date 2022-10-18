@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.conf import settings
 from movie.models import Movie
+from django.db.models import Q
 
 def index(request):
     return render(request,"movie/index.html")
@@ -36,8 +37,9 @@ def profile(request):
 
 @login_required
 def dashboard(request):
-    movie = Movie.objects.filter(users=request.user)
-    return render(request,"movie/dashboard.html",{"movie":movie,"media_url":settings.MEDIA_URL})
+    obj = User.objects.get(id = request.user.id)  
+    movie = Movie.objects.filter(Q(users=request.user) | Q(owner = obj.id))
+    return render(request,"movie/dashboard.html",{"movie":set(movie),"media_url":settings.MEDIA_URL})
 
 @login_required
 def image_upload(request):
@@ -45,7 +47,7 @@ def image_upload(request):
         form = MoviePosterForm(request.POST, request.FILES)
         if form.is_valid():
             movie = Movie.objects.create(movie_name=form.cleaned_data["movie_name"],movie_poster=form.cleaned_data["movie_poster"],
-            movie_description=form.cleaned_data["movie_description"])
+            movie_description=form.cleaned_data["movie_description"],owner = request.user.id)
             movie.save()
             return redirect('dashboard')
         else:
